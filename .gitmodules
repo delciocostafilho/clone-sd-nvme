@@ -1,0 +1,3 @@
+[submodule "rpi-clone"]
+	path = rpi-clone
+	url = https://github.com/geerlingguy/rpi-clone.git

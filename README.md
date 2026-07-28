@@ -106,7 +106,7 @@ Se o Raspberry Pi passar a inicializar direto pelo SSD NVMe mesmo com o Cartão 
    ```
 2. Defina o parâmetro `BOOT_ORDER` para priorizar o Cartão SD (código `1`) antes do NVMe (código `6`):
    ```text
-   BOOT_ORDER=0xf461
+   BOOT_ORDER=0xf164
    ```
 3. Salve com `Ctrl+O`, confirme com `Enter` e saia com `Ctrl+X`.
 4. Reinicie o sistema:

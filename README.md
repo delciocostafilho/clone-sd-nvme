@@ -1,4 +1,4 @@
-0# Clone SD → NVMe para Raspberry Pi
+# Clone SD → NVMe para Raspberry Pi
 
 Automatiza a clonagem do cartão SD para um SSD NVMe no Raspberry Pi. Os scripts ativam o suporte ao NVMe, instalam o `rpi-clone` e executam a sincronização — tudo em um único comando.
 
@@ -95,6 +95,25 @@ cp -r auto_clone_nvme_offline.sh rpi-clone/ /caminho/no/sd/
 ---
 
 ## Solução de problemas
+
+**O sistema inicia pelo NVMe em vez do Cartão SD após a clonagem**
+
+Se o Raspberry Pi passar a inicializar direto pelo SSD NVMe mesmo com o Cartão SD inserido, ajuste a ordem de boot no bootloader/EEPROM:
+
+1. Abra a configuração da EEPROM:
+   ```bash
+   sudo rpi-eeprom-config --edit
+   ```
+2. Defina o parâmetro `BOOT_ORDER` para priorizar o Cartão SD (código `1`) antes do NVMe (código `6`):
+   ```text
+   BOOT_ORDER=0xf461
+   ```
+3. Salve com `Ctrl+O`, confirme com `Enter` e saia com `Ctrl+X`.
+4. Reinicie o sistema:
+   ```bash
+   sudo reboot
+   ```
+> *Caso não consiga acessar o terminal porque o sistema iniciou pelo NVMe, desligue o Pi, desconecte fisicamente o NVMe/cabo HAT, ligue apenas com o Cartão SD, faça a alteração acima e reconecte o NVMe.*
 
 **O NVMe não é detectado após executar o script**
 

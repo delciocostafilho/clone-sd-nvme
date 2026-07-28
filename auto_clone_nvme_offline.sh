@@ -60,8 +60,8 @@ fi
 echo "-> Disco $DEST_DISK_DEV detectado e pronto na tabela de partições!"
 echo ""
 echo "=== 4. Iniciando a clonagem / sincronização ==="
-echo "Executando rpi-clone para $DEST_DISK_NAME..."
-sudo rpi-clone -u "$DEST_DISK_NAME"
+echo "Executando rpi-clone para $DEST_DISK_NAME com isolamento de referências (-e)..."
+sudo rpi-clone -u -e "$DEST_DISK_NAME"
 
 echo ""
 echo "======================================================"

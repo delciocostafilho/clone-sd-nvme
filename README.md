@@ -93,6 +93,38 @@ cp -r auto_clone_nvme_offline.sh rpi-clone/ /caminho/no/sd/
 4. **Sincroniza o Cartão SD para o NVMe** — executa `rpi-clone -u nvme0n1` para clonar o sistema completo.
 
 ---
+## Verificação de boot
+
+**Para confirmar que os dois discos agora têm identificadores de partição diferentes (e que o script ajustou as rotas de boot do NVMe), execute este comando no terminal:**
+
+```bash
+sudo blkid
+```
+**Ele exibirá uma saída parecida com esta:**
+
+```bash
+/dev/mmcblk0p1: LABEL_FATBOOT="bootfs" ... PARTUUID="a1b2c3d4-01"
+/dev/mmcblk0p2: LABEL="rootfs"        ... PARTUUID="a1b2c3d4-02"
+/dev/nvme0n1p1: LABEL_FATBOOT="bootfs" ... PARTUUID="e5f6g7h8-01"
+/dev/nvme0n1p2: LABEL="rootfs"        ... PARTUUID="e5f6g7h8-02"
+```
+O que você deve observar:
+
+> *Os valores de PARTUUID (ou UUID):
+As partições do mmcblk0 (SD) e do nvme0n1 (NVMe) não podem ter exatamente o mesmo código inicial (a parte antes do hífen).
+Se estiverem diferentes, a colisão de UUIDs está resolvida!*
+
+**`Outras duas verificações úteis:**
+Confirmar em qual disco o Pi subiu agora:
+
+```bash
+findmnt /
+```
+Se retornar /dev/mmcblk0p2, significa que ele ligou pelo Cartão SD.
+
+Se retornar /dev/nvme0n1p2, significa que subiu pelo NVMe.
+
+---
 
 ## Solução de problemas
 
@@ -106,7 +138,7 @@ Se o Raspberry Pi passar a inicializar direto pelo SSD NVMe mesmo com o Cartão 
    ```
 2. Defina o parâmetro `BOOT_ORDER` para priorizar o Cartão SD (código `1`) antes do NVMe (código `6`):
    ```text
-   BOOT_ORDER=0xf164
+   BOOT_ORDER=0xf461
    ```
 3. Salve com `Ctrl+O`, confirme com `Enter` e saia com `Ctrl+X`.
 4. Reinicie o sistema:
@@ -134,7 +166,6 @@ Instale o pacote `parted`:
 ```bash
 sudo apt install parted
 ```
-
 ---
 
 ## Referências

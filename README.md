@@ -164,51 +164,51 @@ As configurações de inicialização do barramento PCIe ficam salvas na memóri
    sudo rpi-eeprom-config --edit
     ```
 1. Garanta que a seção [all] contenha as diretivas de PCIe e boot:
-```text
-[all]
-BOOT_UART=1
-BOOT_ORDER=0xf461
-PCIE_PROBE=1
-NET_INSTALL_AT_POWER_ON=1
-```
+   ```text
+   [all]
+   BOOT_UART=1
+   BOOT_ORDER=0xf461
+   PCIE_PROBE=1
+   NET_INSTALL_AT_POWER_ON=1
+   ```
 2. Salve (Ctrl+O, Enter) e saia (Ctrl+X).
 3. Despois de salvar aguarde o boot ser atualizado, uma mensagem como essa deve aparecer.
-```text
-Updating bootloader EEPROM
- image: /usr/lib/firmware/raspberrypi/bootloader-2712/default/pieeprom-2025-05-08.bin
-config_src: blconfig device
-config: /tmp/tmpcb94w393/boot.conf
-################################################################################
-[all]
-BOOT_UART=1
-BOOT_ORDER=0xf461
-PCIE_PROBE=1
-NET_INSTALL_AT_POWER_ON=1
-
-################################################################################
-*** CREATED UPDATE /tmp/tmpcb94w393/pieeprom.upd  ***
-
-   CURRENT: qui 08 mai 2025 14:13:17 UTC (1746713597)
-    UPDATE: qui 08 mai 2025 14:13:17 UTC (1746713597)
-    BOOTFS: /boot/firmware
-'/tmp/tmp.PBeN4ZLywS' -> '/boot/firmware/pieeprom.upd'
-
-UPDATING bootloader. This could take up to a minute. Please wait
-
-*** Do not disconnect the power until the update is complete ***
-
-If a problem occurs then the Raspberry Pi Imager may be used to create
-a bootloader rescue SD card image which restores the default bootloader image.
-
-flashrom -p linux_spi:dev=/dev/spidev10.0,spispeed=16000 -w /boot/firmware/pieeprom.upd
-Verifying update
-VERIFY: SUCCESS
-UPDATE SUCCESSFUL
-```
+   ```text
+   Updating bootloader EEPROM
+    image: /usr/lib/firmware/raspberrypi/bootloader-2712/default/pieeprom-2025-05-08.bin
+   config_src: blconfig device
+   config: /tmp/tmpcb94w393/boot.conf
+   ################################################################################
+   [all]
+   BOOT_UART=1
+   BOOT_ORDER=0xf461
+   PCIE_PROBE=1
+   NET_INSTALL_AT_POWER_ON=1
+   
+   ################################################################################
+   *** CREATED UPDATE /tmp/tmpcb94w393/pieeprom.upd  ***
+   
+      CURRENT: qui 08 mai 2025 14:13:17 UTC (1746713597)
+       UPDATE: qui 08 mai 2025 14:13:17 UTC (1746713597)
+       BOOTFS: /boot/firmware
+   '/tmp/tmp.PBeN4ZLywS' -> '/boot/firmware/pieeprom.upd'
+   
+   UPDATING bootloader. This could take up to a minute. Please wait
+   
+   *** Do not disconnect the power until the update is complete ***
+   
+   If a problem occurs then the Raspberry Pi Imager may be used to create
+   a bootloader rescue SD card image which restores the default bootloader image.
+   
+   flashrom -p linux_spi:dev=/dev/spidev10.0,spispeed=16000 -w /boot/firmware/pieeprom.upd
+   Verifying update
+   VERIFY: SUCCESS
+   UPDATE SUCCESSFUL
+   ```
 4. Aplique as alterações reiniciando o sistema:
-```bash
-sudo reboot
-```
+   ```bash
+   sudo reboot
+   ```
 
 **O NVMe não é detectado após executar o script**
 

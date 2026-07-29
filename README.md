@@ -131,9 +131,9 @@ Se estiverem diferentes, a colisão de UUIDs está resolvida!*
 
 Caso aconteça o erro abaixo:
 
->*pi@cubagem:~/clone_sd $ sudo ./auto_clone_nvme_offline.sh
-> env: ‘bash\r’: Arquivo ou diretório inexistente
-> env: usa -[v]S para passar opções em linhas shebang*
+> *pi@cubagem:~/clone_sd $ sudo ./auto_clone_nvme_offline.sh*
+> *env: ‘bash\r’: Arquivo ou diretório inexistente*
+> *env: usa -[v]S para passar opções em linhas shebang*
 
 Rode o comando abaixo no terminal para limpar os caracteres invisíveis do Windows (\r) do arquivo:
 

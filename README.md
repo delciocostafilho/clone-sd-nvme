@@ -87,10 +87,14 @@ cp -r auto_clone_nvme_offline.sh rpi-clone/ /caminho/no/sd/
 
 ## O que o script faz automaticamente
 
-1. **Ativa o suporte ao NVMe** — adiciona `dtparam=nvme` ao `/boot/firmware/config.txt` se ainda não estiver presente.
-2. **Instala o `rpi-clone`** — copia o binário de `rpi-clone/rpi-clone` para `/usr/local/sbin/`, pulando caso já esteja instalado.
-3. **Reconecta o barramento PCIe** — desmonta partições presas e força o kernel a reler a tabela de partições do NVMe. Se o disco não for detectado, oferece a opção de reiniciar o Raspberry Pi.
-4. **Sincroniza o Cartão SD para o NVMe** — executa `rpi-clone -u nvme0n1` para clonar o sistema completo.
+1. **Habilita o barramento PCIe/NVMe:** Adiciona a linha `dtparam=nvme` ao `/boot/firmware/config.txt` caso ainda não esteja presente, garantindo a ativação física do dispositivo no boot.
+2. **Gerencia a ferramenta de clonagem (`rpi-clone`):** Verifica se o utilitário `rpi-clone` está instalado no caminho `/usr/local/sbin/` e realiza a instalação de forma automática se necessário.
+3. **Reconecta e prepara o barramento PCIe:** Desmonta partições ativas do NVMe no sistema e força o Kernel Linux a reler a tabela de partições do disco (`/dev/nvme0n1`). Caso o SSD não seja localizado, alerta o usuário e sugere a reinicialização.
+4. **Sincroniza o Cartão SD para o NVMe:** Executa a clonagem do sistema de arquivos usando o `rpi-clone` com parâmetros de isolamento de referências (`-e`).
+5. **Correção pós-clonagem de partições NVMe (Fix `sed`):** Resolve a falha nativa do `rpi-clone` que omitia o sufixo `p` nas partições NVMe (`nvme0n11` / `nvme0n12`). O script monta temporariamente o NVMe e corrige a nomenclatura para `/dev/nvme0n1p1` e `/dev/nvme0n1p2` nos arquivos:
+   - `/boot/firmware/cmdline.txt` (direciona a montagem da raiz)
+   - `/etc/fstab` (montagem de `/` e `/boot/firmware`)
+6. **Garante a integridade do boot:** Aplica a instrução `sync` para gravar permanentemente as alterações no SSD e desmonta os pontos temporários, deixando o NVMe 100% autônomo.
 
 ---
 ## Verificação de boot

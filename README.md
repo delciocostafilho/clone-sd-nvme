@@ -135,7 +135,9 @@ Instale o pacote `parted`:
 sudo apt install parted
 ```
 ---
-## Para confirmar que os dois discos agora têm identificadores de partição diferentes (e que o script ajustou as rotas de boot do NVMe), execute este comando no terminal:
+## Verificação de boot
+
+**Para confirmar que os dois discos agora têm identificadores de partição diferentes (e que o script ajustou as rotas de boot do NVMe), execute este comando no terminal:**
 
 ```bash
 sudo blkid

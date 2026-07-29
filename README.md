@@ -131,7 +131,7 @@ Se estiverem diferentes, a colisão de UUIDs está resolvida!*
 
 ## Solução de problemas
 
-**Erro ao rodar comando após exportação do Window para o Linux do arquivo**
+**Erro ao rodar comando após transferir o arquivo do Windows para o Linux**
 
 Caso aconteça o erro abaixo:
 ```text
@@ -154,24 +154,61 @@ sed -i 's/\r$//' auto_clone_nvme_online.sh
  ```
 Executar novamente o comando do script.
 
-**O sistema inicia pelo NVMe em vez do Cartão SD após a clonagem**
+**O NVMe não dá boot quando o Cartão SD é removido (LED verde fixo ou tela preta)**
 
-Se o Raspberry Pi passar a inicializar direto pelo SSD NVMe mesmo com o Cartão SD inserido, ajuste a ordem de boot no bootloader/EEPROM:
+As configurações de inicialização do barramento PCIe ficam salvas na memória **EEPROM da placa-mãe do Raspberry Pi 5** (e não no Cartão SD/NVMe). Se você trocou de Raspberry Pi ou a EEPROM foi resetada, o bootloader não saberá que deve procurar o SSD.
 
-1. Abra a configuração da EEPROM:
+1. Insira o Cartão SD novamente e ligue o Pi.
+2. Abra as configurações do firmware da placa:
    ```bash
    sudo rpi-eeprom-config --edit
-   ```
-2. Defina o parâmetro `BOOT_ORDER` para priorizar o Cartão SD (código `1`) antes do NVMe (código `6`):
-   ```text
-   BOOT_ORDER=0xf461
-   ```
-3. Salve com `Ctrl+O`, confirme com `Enter` e saia com `Ctrl+X`.
-4. Reinicie o sistema:
-   ```bash
-   sudo reboot
-   ```
-> *Caso não consiga acessar o terminal porque o sistema iniciou pelo NVMe, desligue o Pi, desconecte fisicamente o NVMe/cabo HAT, ligue apenas com o Cartão SD, faça a alteração acima e reconecte o NVMe.*
+    ```
+1. Garanta que a seção [all] contenha as diretivas de PCIe e boot:
+```text
+[all]
+BOOT_UART=1
+BOOT_ORDER=0xf461
+PCIE_PROBE=1
+NET_INSTALL_AT_POWER_ON=1
+```
+2. Salve (Ctrl+O, Enter) e saia (Ctrl+X).
+3. Despois de salvar aguarde o boot ser atualizado, uma mensagem como essa deve aparecer.
+```text
+Updating bootloader EEPROM
+ image: /usr/lib/firmware/raspberrypi/bootloader-2712/default/pieeprom-2025-05-08.bin
+config_src: blconfig device
+config: /tmp/tmpcb94w393/boot.conf
+################################################################################
+[all]
+BOOT_UART=1
+BOOT_ORDER=0xf461
+PCIE_PROBE=1
+NET_INSTALL_AT_POWER_ON=1
+
+################################################################################
+*** CREATED UPDATE /tmp/tmpcb94w393/pieeprom.upd  ***
+
+   CURRENT: qui 08 mai 2025 14:13:17 UTC (1746713597)
+    UPDATE: qui 08 mai 2025 14:13:17 UTC (1746713597)
+    BOOTFS: /boot/firmware
+'/tmp/tmp.PBeN4ZLywS' -> '/boot/firmware/pieeprom.upd'
+
+UPDATING bootloader. This could take up to a minute. Please wait
+
+*** Do not disconnect the power until the update is complete ***
+
+If a problem occurs then the Raspberry Pi Imager may be used to create
+a bootloader rescue SD card image which restores the default bootloader image.
+
+flashrom -p linux_spi:dev=/dev/spidev10.0,spispeed=16000 -w /boot/firmware/pieeprom.upd
+Verifying update
+VERIFY: SUCCESS
+UPDATE SUCCESSFUL
+```
+4. Aplique as alterações reiniciando o sistema:
+```bash
+sudo reboot
+```
 
 **O NVMe não é detectado após executar o script**
 

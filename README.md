@@ -150,7 +150,9 @@ sudo blkid
 ```
 O que você deve observar:
 
-Os valores de PARTUUID (ou UUID): As partições do mmcblk0 (SD) e do nvme0n1 (NVMe) não podem ter exatamente o mesmo código inicial (a parte antes do hífen). Se estiverem diferentes, a colisão de UUIDs está resolvida!
+> *Os valores de PARTUUID (ou UUID):*
+> *As partições do mmcblk0 (SD) e do nvme0n1 (NVMe) não podem ter exatamente o mesmo código inicial (a parte antes do hífen).*
+> *Se estiverem diferentes, a colisão de UUIDs está resolvida!*
 
 **`Outras duas verificações úteis:**
 Confirmar em qual disco o Pi subiu agora:

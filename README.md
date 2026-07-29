@@ -95,6 +95,15 @@ cp -r auto_clone_nvme_offline.sh rpi-clone/ /caminho/no/sd/
 ---
 ## Verificação de boot
 
+**Confirmar em qual disco o Pi subiu agora:**
+
+```bash
+findmnt /
+```
+Se retornar /dev/mmcblk0p2, significa que ele ligou pelo Cartão SD.
+
+Se retornar /dev/nvme0n1p2, significa que subiu pelo NVMe.
+
 **Para confirmar que os dois discos agora têm identificadores de partição diferentes (e que o script ajustou as rotas de boot do NVMe), execute este comando no terminal:**
 
 ```bash
@@ -113,16 +122,6 @@ O que você deve observar:
 > *Os valores de PARTUUID (ou UUID):
 As partições do mmcblk0 (SD) e do nvme0n1 (NVMe) não podem ter exatamente o mesmo código inicial (a parte antes do hífen).
 Se estiverem diferentes, a colisão de UUIDs está resolvida!*
-
-**`Outras duas verificações úteis:**
-Confirmar em qual disco o Pi subiu agora:
-
-```bash
-findmnt /
-```
-Se retornar /dev/mmcblk0p2, significa que ele ligou pelo Cartão SD.
-
-Se retornar /dev/nvme0n1p2, significa que subiu pelo NVMe.
 
 ---
 

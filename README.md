@@ -127,6 +127,29 @@ Se estiverem diferentes, a colisão de UUIDs está resolvida!*
 
 ## Solução de problemas
 
+**Erro ao rodar comando após exportação do Window para o Linux do arquivo**
+
+Caso aconteça o erro abaixo:
+
+>*pi@cubagem:~/clone_sd $ sudo ./auto_clone_nvme_offline.sh
+env: ‘bash\r’: Arquivo ou diretório inexistente
+env: usa -[v]S para passar opções em linhas shebang*
+
+Rode o comando abaixo no terminal para limpar os caracteres invisíveis do Windows (\r) do arquivo:
+
+**MODO OFFLINE**
+
+```bash
+sed -i 's/\r$//' auto_clone_nvme_offline.sh
+ ```
+
+**MODO ONLINE**
+
+```bash
+sed -i 's/\r$//' auto_clone_nvme_online.sh
+ ```
+Executar novamente o comando do script.
+
 **O sistema inicia pelo NVMe em vez do Cartão SD após a clonagem**
 
 Se o Raspberry Pi passar a inicializar direto pelo SSD NVMe mesmo com o Cartão SD inserido, ajuste a ordem de boot no bootloader/EEPROM:

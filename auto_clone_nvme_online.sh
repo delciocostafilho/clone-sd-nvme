@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Script de automação para ativar NVMe, instalar rpi-clone e clonar o sistema.
+#Versao: 1.0
 
 set -e
 
@@ -59,6 +60,6 @@ echo "Executando rpi-clone para $DEST_DISK_NAME com desvinculação de referênc
 sudo rpi-clone -f -U -e "$DEST_DISK_NAME" "$DEST_DISK_NAME"
 
 echo ""
-echo "======================================================"
+echo "======================================================="
 echo " Processo concluído com sucesso!"
-echo "======================================================"
+echo "======================================================="

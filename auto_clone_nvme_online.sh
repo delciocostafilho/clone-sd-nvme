@@ -59,6 +59,40 @@ echo "=== 4. Iniciando a clonagem / sincronização ==="
 echo "Executando rpi-clone para $DEST_DISK_NAME com desvinculação de referências (-e)..."
 sudo rpi-clone -f -U -e "$DEST_DISK_NAME" "$DEST_DISK_NAME"
 
+# =====================================================================
+# CORREÇÃO AUTOMÁTICA DE NOMENCLATURA DAS PARTIÇÕES NVME (p1 / p2)
+# =====================================================================
+echo "Verificando e corrigindo caminhos do NVMe no cmdline.txt e fstab..."
+
+# Criar pontos de montagem temporários
+TMP_BOOT="/tmp/nvme_fix_boot"
+TMP_ROOT="/tmp/nvme_fix_root"
+mkdir -p "$TMP_BOOT" "$TMP_ROOT"
+
+# Montar as partições recém-clonadas do NVMe
+mount /dev/nvme0n1p1 "$TMP_BOOT"
+mount /dev/nvme0n1p2 "$TMP_ROOT"
+
+# 1. Corrigir o cmdline.txt na partição BOOT do NVMe
+if [ -f "$TMP_BOOT/cmdline.txt" ]; then
+    sed -i 's/nvme0n11/nvme0n1p1/g' "$TMP_BOOT/cmdline.txt"
+    sed -i 's/nvme0n12/nvme0n1p2/g' "$TMP_BOOT/cmdline.txt"
+fi
+
+# 2. Corrigir o /etc/fstab na partição ROOT do NVMe
+if [ -f "$TMP_ROOT/etc/fstab" ]; then
+    sed -i 's/nvme0n11/nvme0n1p1/g' "$TMP_ROOT/etc/fstab"
+    sed -i 's/nvme0n12/nvme0n1p2/g' "$TMP_ROOT/etc/fstab"
+fi
+
+# Forçar a gravação de alterações no disco e desmontar
+sync
+umount "$TMP_BOOT"
+umount "$TMP_ROOT"
+rm -rf "$TMP_BOOT" "$TMP_ROOT"
+
+echo "Correção dos caminhos NVMe concluída com sucesso!"
+
 echo ""
 echo "======================================================="
 echo " Processo concluído com sucesso!"

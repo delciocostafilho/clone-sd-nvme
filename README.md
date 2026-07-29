@@ -170,6 +170,7 @@ As configurações de inicialização do barramento PCIe ficam salvas na memóri
    BOOT_ORDER=0xf461
    PCIE_PROBE=1
    NET_INSTALL_AT_POWER_ON=1
+   DISABLE_HDMI_DIAG=1
    ```
 2. Salve (Ctrl+O, Enter) e saia (Ctrl+X).
 3. Despois de salvar aguarde o boot ser atualizado, uma mensagem como essa deve aparecer.

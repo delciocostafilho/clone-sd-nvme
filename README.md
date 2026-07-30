@@ -211,6 +211,17 @@ As configurações de inicialização do barramento PCIe ficam salvas na memóri
    sudo reboot
    ```
 
+**Está mostrando a tela do Instalador de rede ao Inicializar (Tela Raspberry)**
+
+1. Remover o instalador de rede usando o menu
+```bash
+sudo raspi-config
+```
+2. Vá em Advanced Options.
+3. Selecione a opção Network Install UI.
+4. Escolha "On demand Display the UI if the SHIFT key is pressed or if an error occurs" para remover a interface de rede do boot.
+5. Selecione Finish para sair e confirme o reinício do sistema.
+
 **O NVMe não é detectado após executar o script**
 
 O barramento PCIe pode ter desconectado. O script detecta isso e pergunta se deseja reiniciar. Confirme com `s` e execute o script novamente após o reboot.
